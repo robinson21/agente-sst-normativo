@@ -206,5 +206,75 @@
     "status": "pending_ai",
     "fuente": "LeyChile (BCN)",
     "fecha_deteccion": "2026-04-12T13:45:37.778399"
+  },
+  {
+    "id": "20260412194549_9104971a",
+    "norma": "DT Dirección del Trabajo",
+    "articulo": "Ver documento completo",
+    "descripcion": "Publicación detectada en la Dirección del Trabajo.",
+    "link": "https://www.dt.gob.cl/portal/1626/w3-channel.html",
+    "status": "pending_ai",
+    "fuente": "Dirección del Trabajo (DT)",
+    "fecha_deteccion": "2026-04-12T19:45:49.959645"
+  },
+  {
+    "id": "20260412194549_c7f466fb",
+    "norma": "Subsecretaría del Trabajo",
+    "articulo": "Ver documento completo",
+    "descripcion": "Publicación detectada en la Dirección del Trabajo.",
+    "link": "https://www.subtrab.gob.cl/",
+    "status": "pending_ai",
+    "fuente": "Dirección del Trabajo (DT)",
+    "fecha_deteccion": "2026-04-12T19:45:49.960065"
+  },
+  {
+    "id": "20260412194549_7f2253b7",
+    "norma": "Buenas\n              Prácticas Laborales",
+    "articulo": "Ver documento completo",
+    "descripcion": "Publicación detectada en la Dirección del Trabajo.",
+    "link": "https://www.dt.gob.cl/portal/1626/w3-article-99167.html",
+    "status": "pending_ai",
+    "fuente": "Dirección del Trabajo (DT)",
+    "fecha_deteccion": "2026-04-12T19:45:49.960125"
+  },
+  {
+    "id": "20260412194549_8e855a03",
+    "norma": "Información de\n              Multas",
+    "articulo": "Ver documento completo",
+    "descripcion": "Publicación detectada en la Dirección del Trabajo.",
+    "link": "https://front001-consumultas-prd-consulta-multas-prod.api.dirtrab.cl/inicio",
+    "status": "pending_ai",
+    "fuente": "Dirección del Trabajo (DT)",
+    "fecha_deteccion": "2026-04-12T19:45:49.960217"
+  },
+  {
+    "id": "20260412194549_47101281",
+    "norma": "Terminaciones\n              de Contrato de Trabajo",
+    "articulo": "Ver documento completo",
+    "descripcion": "Publicación detectada en la Dirección del Trabajo.",
+    "link": "https://www.dt.gob.cl/portal/1629/w3-propertyvalue-188840.html",
+    "status": "pending_ai",
+    "fuente": "Dirección del Trabajo (DT)",
+    "fecha_deteccion": "2026-04-12T19:45:49.960229"
+  },
+  {
+    "id": "20260412194549_d8ff19d4",
+    "norma": "Registro\n              Nacional de Asesores para Mediaciones Laborales",
+    "articulo": "Ver documento completo",
+    "descripcion": "Publicación detectada en la Dirección del Trabajo.",
+    "link": "https://www.dt.gob.cl/portal/1626/w3-article-120303.html",
+    "status": "pending_ai",
+    "fuente": "Dirección del Trabajo (DT)",
+    "fecha_deteccion": "2026-04-12T19:45:49.960241"
+  },
+  {
+    "id": "20260412194549_aa0ecf1e",
+    "norma": "Conciliadores de la Dirección\n              del Trabajo",
+    "articulo": "Ver documento completo",
+    "descripcion": "Publicación detectada en la Dirección del Trabajo.",
+    "link": "https://www.dt.gob.cl/portal/1628/articles-120519_recurso_2.pdf",
+    "status": "pending_ai",
+    "fuente": "Dirección del Trabajo (DT)",
+    "fecha_deteccion": "2026-04-12T19:45:49.960313"
   }
 ]
