@@ -1,0 +1,62 @@
+[
+  {
+    "id": "1",
+    "norma": "Ley 16.744",
+    "articulo": "Artículo 67",
+    "descripcion": "Establece que las empresas están obligadas a adoptar y mantener medidas de higiene y seguridad en el trabajo, según las normas que dicte el Servicio Nacional de Salud.",
+    "como_resolver": "Implementar un Programa de Prevención de Riesgos, contar con Reglamento Interno de Higiene y Seguridad (RIHS) y realizar capacitaciones periódicas.",
+    "evidencia": "Reglamento Interno vigente, registros de capacitación (ODI), Programa de Prevención de Riesgos firmado.",
+    "fecha_actualizacion": "2024-05-01",
+    "link": "https://www.leychile.cl/Navegar?idNorma=28650#670"
+  },
+  {
+    "id": "2",
+    "norma": "D.S. 594",
+    "articulo": "Artículo 3",
+    "descripcion": "La empresa está obligada a mantener los lugares de trabajo en condiciones sanitarias y ambientales adecuadas para proteger la vida y salud de los trabajadores.",
+    "como_resolver": "Realizar operativos de limpieza, control de plagas y asegurar abastecimiento de agua potable y servicios higiénicos suficientes.",
+    "evidencia": "Registros de limpieza, certificados de sanitización/desratización, resultados de análisis de agua potable.",
+    "fecha_actualizacion": "2024-05-01",
+    "link": "https://www.leychile.cl/Navegar?idNorma=167766#30"
+  },
+  {
+    "id": "3",
+    "norma": "D.S. 40",
+    "articulo": "Artículo 21",
+    "descripcion": "Obligación de informar oportuna y convenientemente a todos sus trabajadores acerca de los riesgos que entrañan sus labores (Derecho a Saber).",
+    "como_resolver": "Realizar charlas de Inducción de Hombre Nuevo (ODI) al ingreso y ante cambios en procesos o puestos de trabajo.",
+    "evidencia": "Documentos ODI firmados por los trabajadores y el representante de la empresa.",
+    "fecha_actualizacion": "2024-05-01",
+    "link": "https://www.leychile.cl/Navegar?idNorma=10545#210"
+  },
+  {
+    "id": "4",
+    "norma": "Ley 21.643 (Ley Karin)",
+    "articulo": "Artículos varios",
+    "descripcion": "Prevenir, investigar y sancionar el acoso laboral, sexual y la violencia en el trabajo.",
+    "como_resolver": "Actualizar el RIHS, implementar un Protocolo de Prevención de Acoso y realizar formación a los mandos medios y trabajadores.",
+    "evidencia": "Protocolo de Prevención de Acoso, registros de capacitación sobre la Ley Karin, RIHS actualizado con anexo de denuncias.",
+    "fecha_actualizacion": "2024-02-01",
+    "link": "https://www.leychile.cl/Navegar?idNorma=1200000"
+  },
+  {
+    "id": "5",
+    "norma": "D.S. 54",
+    "articulo": "Artículo 1",
+    "descripcion": "En toda empresa, faena, sucursal o agencia en que trabajen más de 25 personas, se organizarán Comités Paritarios de Higiene y Seguridad.",
+    "como_resolver": "Realizar el proceso de elección de representantes de trabajadores y designación de representantes de la empresa ante el CPHS.",
+    "evidencia": "Actas de constitución, acta de elección de trabajadores, actas de reuniones mensuales.",
+    "fecha_actualizacion": "2024-05-01",
+    "link": "https://www.leychile.cl/Navegar?idNorma=10674"
+  },
+  {
+    "id": "6",
+    "norma": "D.S. 594 (Modificado)",
+    "articulo": "Artículo 66",
+    "descripcion": "Límites permisibles para agentes químicos y físicos en el ambiente de trabajo.",
+    "como_resolver": "Realizar mediciones de agentes ambientales mediante laboratorios acreditados y comparar con tablas vigentes.",
+    "evidencia": "Informes de mediciones ambientales, certificados de calibración de equipos.",
+    "fecha_actualizacion": "2026-04-09",
+    "link": "https://www.leychile.cl/Navegar?idNorma=167766#660"
+  }
+]
