@@ -197,65 +197,61 @@ def fetch_with_retry(url, timeout=REQUEST_TIMEOUT, max_retries=MAX_RETRIES):
 # =============================================================================
 # Análisis con Google Gemini
 # =============================================================================
-GEMINI_PROMPT_TEMPLATE = """Eres un experto senior en Seguridad y Salud en el Trabajo (SST), Medio Ambiente, Calidad y cumplimiento regulatorio en Chile. Trabajas para ESMAX Distribución SpA, empresa líder en distribución de combustibles con operaciones en:
+GEMINI_BATCH_PROMPT_TEMPLATE = """Eres un experto senior en Seguridad y Salud en el Trabajo (SST), Medio Ambiente, Calidad y cumplimiento regulatorio en Chile. Trabajas para ESMAX Distribución SpA.
 
-- Plantas de almacenamiento y distribución de combustibles
-- Estaciones de servicio (venta B2C)
-- Venta directa a clientes industriales (B2B)  
-- Proyectos mineros (suministro de combustible)
-- Operaciones portuarias (recepción de combustible)
-- Transporte de carga peligrosa (Clase 3 - Líquidos inflamables)
+A continuación, recibirás una lista de hallazgos normativos. Cada uno tiene un ID único.
+Genera un análisis estructurado y devuelve el resultado COMO UN ARREGLO JSON válido (JSON Array). Cada elemento del arreglo debe corresponder a un hallazgo y tener la siguiente estructura exacta:
 
-Analiza la siguiente normativa/hallazgo detectado por el monitor automático:
+[
+  {{
+    "id": "AQUÍ_EL_ID_DEL_HALLAZGO",
+    "resumen": "Explicación clara y simple de qué dice esta norma en 2-3 oraciones",
+    "aplica_esmax": true/false,
+    "como_aplica": "Explicación de cómo aplica específicamente a ESMAX y sus operaciones",
+    "acciones_requeridas": [
+      "Acción concreta 1",
+      "Acción concreta 2"
+    ],
+    "evidencia_necesaria": [
+      "Documento/registro 1"
+    ],
+    "plazo": "Inmediato / 30 días / 90 días / Sin plazo definido",
+    "urgencia": "Alta / Media / Baja",
+    "areas_afectadas": ["SST", "Medio Ambiente", "Calidad", "Seguridad Empresarial"],
+    "normativa_relacionada": ["Ley 16.744", "D.S. 594", "etc."]
+  }}
+]
 
-📋 NORMA: {norma}
-📝 DESCRIPCIÓN: {descripcion}
-🔗 FUENTE: {fuente}
-
-Genera un análisis estructurado en formato JSON con la siguiente estructura exacta (responde SOLO el JSON, sin markdown ni texto adicional):
-
-{{
-  "resumen": "Explicación clara y simple de qué dice esta norma en 2-3 oraciones",
-  "aplica_esmax": true/false,
-  "como_aplica": "Explicación de cómo aplica específicamente a ESMAX y sus operaciones",
-  "acciones_requeridas": [
-    "Acción concreta 1",
-    "Acción concreta 2",
-    "Acción concreta 3"
-  ],
-  "evidencia_necesaria": [
-    "Documento/registro 1",
-    "Documento/registro 2"
-  ],
-  "plazo": "Inmediato / 30 días / 90 días / Sin plazo definido",
-  "urgencia": "Alta / Media / Baja",
-  "areas_afectadas": ["SST", "Medio Ambiente", "Calidad", "Seguridad Empresarial"],
-  "normativa_relacionada": ["Ley 16.744", "D.S. 594", "etc."]
-}}"""
+LISTA DE HALLAZGOS:
+{lista_hallazgos}
+"""
 
 
-def analyze_with_gemini(finding):
+def analyze_with_gemini_batch(new_items):
     """
-    Envía un hallazgo a Google Gemini para análisis experto.
-    Retorna el análisis como diccionario o None si falla.
+    Envía una lista de hallazgos a Google Gemini para análisis masivo (Batch).
+    Retorna un diccionario indexado por ID del hallazgo.
     """
-    if not GEMINI_API_KEY:
-        logger.warning("GEMINI_API_KEY no configurada. Saltando análisis IA.")
-        return None
+    if not GEMINI_API_KEY or not new_items:
+        logger.warning("GEMINI_API_KEY no configurada o lista vacía. Saltando análisis IA.")
+        return {}
 
-    prompt = GEMINI_PROMPT_TEMPLATE.format(
-        norma=finding.get('norma', 'N/D'),
-        descripcion=finding.get('descripcion', 'N/D'),
-        fuente=finding.get('fuente', finding.get('link', 'N/D'))
-    )
+    lista_texto = ""
+    for item in new_items:
+        lista_texto += f"\n--- ID: {item.get('id', 'N/D')} ---\n"
+        lista_texto += f"NORMA: {item.get('norma', 'N/D')}\n"
+        lista_texto += f"DESCRIPCIÓN: {item.get('descripcion', 'N/D')}\n"
+        lista_texto += f"FUENTE: {item.get('fuente', item.get('link', 'N/D'))}\n"
+
+    prompt = GEMINI_BATCH_PROMPT_TEMPLATE.format(lista_hallazgos=lista_texto)
 
     payload = {
         "contents": [{
             "parts": [{"text": prompt}]
         }],
         "generationConfig": {
-            "temperature": 0.3,
-            "maxOutputTokens": 2048,
+            "temperature": 0.2,
+            "maxOutputTokens": 8192,
             "responseMimeType": "application/json"
         }
     }
@@ -267,14 +263,12 @@ def analyze_with_gemini(finding):
     url = f"{GEMINI_ENDPOINT}?key={GEMINI_API_KEY}"
 
     try:
-        response = requests.post(url, json=payload, headers=headers, timeout=60)
+        response = requests.post(url, json=payload, headers=headers, timeout=120)
         response.raise_for_status()
         data = response.json()
 
-        # Extraer texto de la respuesta de Gemini
         text = data['candidates'][0]['content']['parts'][0]['text']
 
-        # Limpiar posible markdown wrapping
         text = text.strip()
         if text.startswith('```json'):
             text = text[7:]
@@ -284,13 +278,19 @@ def analyze_with_gemini(finding):
             text = text[:-3]
         text = text.strip()
 
-        # Parsear JSON
-        analysis = json.loads(text)
-        analysis['analyzed_at'] = datetime.datetime.now().isoformat()
-        analysis['model'] = GEMINI_MODEL
+        resultados = json.loads(text)
+        
+        diccionario_analisis = {}
+        if isinstance(resultados, list):
+            for res in resultados:
+                if isinstance(res, dict) and 'id' in res:
+                    res_id = res.pop('id') # Extraer el ID para usarlo de llave
+                    res['analyzed_at'] = datetime.datetime.now().isoformat()
+                    res['model'] = GEMINI_MODEL
+                    diccionario_analisis[res_id] = res
 
-        logger.info(f"  ✅ Análisis IA completado - Urgencia: {analysis.get('urgencia', 'N/D')}")
-        return analysis
+        logger.info(f"  ✅ Análisis IA Batch completado: {len(diccionario_analisis)} analizados de {len(new_items)} solicitados.")
+        return diccionario_analisis
 
     except requests.exceptions.HTTPError as e:
         logger.error(f"  ❌ Error HTTP Gemini: {e}")
@@ -304,7 +304,7 @@ def analyze_with_gemini(finding):
     except Exception as e:
         logger.error(f"  ❌ Error inesperado con Gemini: {e}")
 
-    return None
+    return {}
 
 
 # =============================================================================
@@ -611,13 +611,15 @@ def main():
     # ========================================
     if new_items and GEMINI_API_KEY:
         logger.info("=" * 60)
-        logger.info("🧠 Iniciando análisis con Google Gemini...")
+        logger.info(f"🧠 Iniciando análisis en LOTE con Google Gemini para {len(new_items)} hallazgos...")
+        
+        batch_results_dict = analyze_with_gemini_batch(new_items)
         analyzed_count = 0
 
-        for i, item in enumerate(new_items):
-            logger.info(f"  Analizando [{i+1}/{len(new_items)}]: {item['norma'][:60]}...")
-
-            analysis = analyze_with_gemini(item)
+        for item in new_items:
+            item_id = item.get('id')
+            analysis = batch_results_dict.get(item_id)
+            
             if analysis:
                 item['ai_analysis'] = analysis
                 item['status'] = 'analyzed'
@@ -625,10 +627,6 @@ def main():
             else:
                 item['ai_analysis'] = None
                 item['status'] = 'pending_ai'
-
-            # Rate limiting: esperar entre llamadas
-            if i < len(new_items) - 1:
-                time.sleep(4)
 
         logger.info(f"✅ Análisis completado: {analyzed_count}/{len(new_items)} hallazgos analizados")
 
