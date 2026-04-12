@@ -3,8 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SST Expert - Centro de Inteligencia Normativa</title>
-    <meta name="description" content="Asistente experto en SST con monitoreo autónomo e interpretación por IA.">
+    <title>SST Expert - Centro de Inteligencia Normativa ESMAX</title>
+    <meta name="description" content="Asistente experto en SST con monitoreo autónomo, análisis por IA Gemini y cobertura completa para ESMAX Distribución.">
     <link rel="stylesheet" href="css/styles.css">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Outfit:wght@400;600;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
@@ -16,15 +16,18 @@
                 <i class="fas fa-brain logo-icon pulse"></i>
                 <div class="logo-text">
                     <h1>SST Intelligence</h1>
-                    <span>Cloud Assistant v4.0</span>
+                    <span>Cloud Assistant v5.0 · Gemini AI</span>
                 </div>
             </div>
             <div class="status-indicators">
                 <div class="indicator">
-                    <span class="dot online"></span> Diario Oficial: Diario
+                    <span class="dot online"></span> LeyChile: Diario
                 </div>
                 <div class="indicator">
-                    <span class="dot online"></span> SUSESO: Semanal
+                    <span class="dot online"></span> DT: Diario
+                </div>
+                <div class="indicator" id="ai-status">
+                    <span class="dot" id="ai-dot"></span> <span id="ai-status-text">IA: Sin configurar</span>
                 </div>
             </div>
         </header>
@@ -34,7 +37,10 @@
                 <i class="fas fa-gavel"></i> Matriz Oficial
             </button>
             <button class="tab-btn" data-tab="suggestions">
-                <i class="fas fa-lightbulb"></i> Sugerencias IA <span id="suggestion-badge" class="badge">0</span>
+                <i class="fas fa-robot"></i> Sugerencias IA <span id="suggestion-badge" class="badge">0</span>
+            </button>
+            <button class="tab-btn" data-tab="settings">
+                <i class="fas fa-cog"></i> Configuración
             </button>
         </nav>
 
@@ -52,6 +58,7 @@
             </section>
 
             <section class="content-area">
+                <!-- Tab: Matriz Oficial -->
                 <div id="official-tab" class="tab-content active">
                     <div class="table-wrapper">
                         <table>
@@ -70,31 +77,75 @@
                     </div>
                 </div>
 
+                <!-- Tab: Sugerencias IA -->
                 <div id="suggestions-tab" class="tab-content">
                     <div class="ai-header">
-                        <h3><i class="fas fa-robot"></i> Hallazgos Pendientes de Análisis</h3>
-                        <p>Estos ítems han sido detectados por el monitor automático y esperan el análisis del experto IA.</p>
+                        <h3><i class="fas fa-robot"></i> Hallazgos con Análisis Inteligente</h3>
+                        <p>Ítems detectados por el monitor automático y analizados por Google Gemini AI.</p>
                     </div>
-                    <div id="suggestions-grid" class="suggestions-grid">
-                        <!-- Suggestions will be cards here -->
+                    <div id="suggestions-grid" class="suggestions-grid"></div>
+                </div>
+
+                <!-- Tab: Configuración -->
+                <div id="settings-tab" class="tab-content">
+                    <div class="settings-card">
+                        <h3><i class="fas fa-key"></i> API Key de Google Gemini</h3>
+                        <p>Para habilitar el análisis IA desde el dashboard, ingresa tu API key gratuita de Google AI Studio.</p>
+                        <div class="api-key-form">
+                            <div class="search-box" style="max-width: 100%;">
+                                <i class="fas fa-lock"></i>
+                                <input type="password" id="api-key-input" placeholder="AIza...">
+                            </div>
+                            <div class="action-buttons" style="margin-top: 1rem;">
+                                <button id="btn-save-key" class="btn btn-primary">
+                                    <i class="fas fa-save"></i> Guardar Key
+                                </button>
+                                <button id="btn-test-key" class="btn btn-secondary">
+                                    <i class="fas fa-flask"></i> Probar Conexión
+                                </button>
+                                <button id="btn-clear-key" class="btn btn-danger">
+                                    <i class="fas fa-trash"></i> Borrar Key
+                                </button>
+                            </div>
+                        </div>
+                        <div id="key-status" class="key-status"></div>
+
+                        <h3 style="margin-top: 2rem;"><i class="fas fa-info-circle"></i> Cómo obtener tu API Key gratis</h3>
+                        <ol class="setup-steps">
+                            <li>Ve a <a href="https://aistudio.google.com/apikey" target="_blank" rel="noopener">aistudio.google.com/apikey</a></li>
+                            <li>Inicia sesión con tu cuenta de Google</li>
+                            <li>Click en <strong>"Create API Key"</strong></li>
+                            <li>Copia la key generada y pégala aquí arriba</li>
+                        </ol>
                     </div>
                 </div>
             </section>
         </main>
 
         <footer>
-            <p>&copy; 2024 Agente SST Normativo - Sistema Automatizado en GitHub</p>
+            <p>&copy; 2024 Agente SST Normativo ESMAX - v5.0 con IA Gemini</p>
         </footer>
     </div>
 
-    <!-- Modal for IA Analysis Animation -->
+    <!-- Modal for IA Analysis -->
     <div id="ai-modal" class="modal">
         <div class="modal-content">
             <div class="ai-processing">
                 <i class="fas fa-atom fa-spin"></i>
-                <h3>Analizando con Inteligencia Artificial...</h3>
-                <p>Extrayendo requisitos, métodos de resolución y evidencias técnicas.</p>
+                <h3>Analizando con Gemini IA...</h3>
+                <p>Interpretando normativa, evaluando impacto en ESMAX y generando acciones.</p>
             </div>
+        </div>
+    </div>
+
+    <!-- Modal for Analysis Result -->
+    <div id="analysis-modal" class="modal">
+        <div class="modal-content modal-wide">
+            <div class="modal-header-bar">
+                <h3><i class="fas fa-brain"></i> Análisis IA Experto</h3>
+                <button class="modal-close" onclick="closeAnalysisModal()">&times;</button>
+            </div>
+            <div id="analysis-result" class="analysis-result"></div>
         </div>
     </div>
 

@@ -1,42 +1,42 @@
-name: SST Normative Monitor
+name: Monitor normativo de la temperatura superficial del mar
 
 on:
   schedule:
-    # Ejecutar todos los días a las 08:00 UTC (05:00 AM Chile aprox)
-    - cron: '0 8 * * *'
-  workflow_dispatch: # Permite ejecución manual desde GitHub
+    - cron: '0 8 * * *'  # 5:00 AM Chile (UTC-3)
+  workflow_dispatch:       # Disparar manualmente
+
+permissions:
+  contents: write
 
 jobs:
   build:
     runs-on: ubuntu-latest
-
+    name: Monitor normativo de SST
+    
     steps:
-    - name: Checkout Repository
-      uses: actions/checkout@v3
+    - name: Checkout repo
+      uses: actions/checkout@v4
+      
+    - name: Setup Python
+      uses: actions/setup-python@v5
       with:
-        persist-credentials: true
+        python-version: '3.11'
+        
+    - name: Install dependencies
+      run: pip install requests beautifulsoup4 lxml google-genai
 
-    - name: Set up Python
-      uses: actions/setup-python@v4
-      with:
-        python-version: '3.9'
-
-    - name: Install Dependencies
-      run: |
-        python -m pip install --upgrade pip
-        pip install requests beautifulsoup4 lxml
-
-    - name: Run SST Monitor
+    - name: Run SST monitor
       env:
         SENDER_EMAIL: ${{ secrets.SENDER_EMAIL }}
         SENDER_PASSWORD: ${{ secrets.SENDER_PASSWORD }}
         RECEIVER_EMAIL: ${{ secrets.RECEIVER_EMAIL }}
+        GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
       run: python scripts/normative_monitor.py
 
-    - name: Commit and Push changes
+    - name: Commit and push changes
       run: |
-        git config --local user.email "action@github.com"
-        git config --local user.name "GitHub Action"
-        git add data/*.json
-        git commit -m "🔔 Auto-update: Nuevos hallazgos detectados [skip ci]" || echo "No hay cambios para committear"
+        git config --local user.email "sst-bot@esmax.cl"
+        git config --local user.name "SST Monitor Bot"
+        git add -A
+        git diff --staged --quiet || git commit -m "🤖 Monitor SST: actualización automática $(date '+%Y-%m-%d %H:%M')"
         git push
