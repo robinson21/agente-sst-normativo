@@ -107,6 +107,11 @@ SEARCH_TERMS = [
     "puerto+maritimo+seguridad",
     "medio+ambiente+residuos",
     "instalacion+electrica+seguridad",
+    "instituto+salud+publica+seguridad",
+    "isp+seguridad",
+    "seremi+salud+resolucion",
+    "ministerio+salud+ocupacional",
+    "compendio+suseso"
 ]
 
 # Configuración de logging
@@ -474,6 +479,61 @@ def monitor_dt():
 
 
 # =============================================================================
+# Monitor 3: SUSESO (Superintendencia de Seguridad Social)
+# =============================================================================
+def monitor_suseso():
+    """
+    Simula o extrae consultas al portal de SUSESO / Compendio de Normas.
+    Nota: El sitio de SUSESO tiene protección anti-scraping dinámica, por lo que 
+    esta función hace un sondeo básico público de noticias/dictámenes.
+    """
+    logger.info("=" * 60)
+    logger.info("Escaneando SUSESO (Superintendencia de Seguridad Social)...")
+    findings = []
+    
+    url = "https://www.suseso.cl/613/w3-propertyname-603.html" # Sección de noticias/novedades
+    
+    headers = {
+        'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36',
+    }
+    
+    try:
+        response = requests.get(url, headers=headers, timeout=15)
+        if response.status_code == 200:
+            soup = BeautifulSoup(response.text, 'html.parser')
+            # Busca los encabezados de artículos
+            for article in soup.find_all(['article', 'div'], class_=['item', 'news-item'])[:5]:
+                title_elem = article.find(['h3', 'h4', 'a'])
+                if not title_elem:
+                    continue
+                
+                title = title_elem.text.strip()
+                link = title_elem.get('href') if title_elem.name == 'a' else article.find('a').get('href', '')
+                
+                if not link.startswith('http'):
+                    link = "https://www.suseso.cl" + link
+                    
+                if title and len(title) > 20:
+                    if is_relevant(title):
+                        logger.info(f"  [+] SUSESO: {title[:80]}...")
+                        findings.append({
+                            "id": generate_id(title, link),
+                            "norma": "SUSESO: " + title,
+                            "descripcion": "Publicación/Noticia en el portal oficial de la Superintendencia de Seguridad Social.",
+                            "link": link,
+                            "fuente": "SUSESO",
+                            "fecha_deteccion": datetime.datetime.now().isoformat(),
+                            "status": "pending"
+                        })
+        else:
+            logger.warning(f"SUSESO retornó código {response.status_code}. Se cubrirá mediante LeyChile.")
+    except Exception as e:
+        logger.warning(f"No se pudo acceder al portal de SUSESO directo: {e}. Se cubrirá mediante LeyChile.")
+        
+    return findings
+
+
+# =============================================================================
 # Deduplicación Multi-criterio
 # =============================================================================
 def is_duplicate(finding, existing_items, processed_ids):
@@ -590,6 +650,11 @@ def main():
         all_findings.extend(monitor_dt())
     except Exception as e:
         logger.error(f"Error en monitor DT: {e}")
+
+    try:
+        all_findings.extend(monitor_suseso())
+    except Exception as e:
+        logger.error(f"Error en monitor SUSESO: {e}")
 
     logger.info("=" * 60)
     logger.info(f"Total hallazgos brutos: {len(all_findings)}")
