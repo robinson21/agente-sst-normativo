@@ -892,5 +892,16 @@
     "fuente": "LeyChile (BCN)",
     "fecha_deteccion": "2026-04-13T03:32:15.860764",
     "ai_analysis": null
+  },
+  {
+    "id": "20260418083437_c3c06b46",
+    "norma": "NORMA EL TRANSPORTE DE BASURA, DESECHOS, ESCOMBROS Y RESIDUOS DENTRO DE LA COMUNA DE CERRILLOS Y SANCIONA EL TRANSPORTE DE DESECHOS HACIA VERTEDEROS CLANDESTINOS",
+    "articulo": "Ver norma completa",
+    "descripcion": "Publicación detectada en LeyChile (Búsqueda: medio+ambiente+residuos). Fecha: 17-DIC-2018.",
+    "link": "https://www.leychile.cl/Navegar?idNorma=1126786&idVersion=2019-01-16",
+    "status": "pending_ai",
+    "fuente": "LeyChile (BCN)",
+    "fecha_deteccion": "2026-04-18T08:34:37.364155",
+    "ai_analysis": null
   }
 ]
