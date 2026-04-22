@@ -903,5 +903,16 @@
     "fuente": "LeyChile (BCN)",
     "fecha_deteccion": "2026-04-18T08:34:37.364155",
     "ai_analysis": null
+  },
+  {
+    "id": "20260422090905_ea08abea",
+    "norma": "CALIFICA DE EMERGENCIA LABORAL A LA SITUACIÓN DE CATÁSTROFE DERIVADA DE LOS INCENDIOS QUE HAN ASOLADO A LAS REGIONES DE BIOBÍO Y ÑUBLE Y AUTORIZA IMPLEMENTACIÓN DE LÍNEA EMERGENCIA LABORAL DEL PROGRAM",
+    "articulo": "Ver norma completa",
+    "descripcion": "Publicación detectada en LeyChile (Búsqueda: riesgo+laboral). Fecha: 14-FEB-2023.",
+    "link": "https://www.leychile.cl/Navegar?idNorma=1188988&idVersion=2023-02-14",
+    "status": "pending_ai",
+    "fuente": "LeyChile (BCN)",
+    "fecha_deteccion": "2026-04-22T09:09:05.934955",
+    "ai_analysis": null
   }
 ]
