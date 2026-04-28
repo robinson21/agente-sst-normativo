@@ -914,5 +914,16 @@
     "fuente": "LeyChile (BCN)",
     "fecha_deteccion": "2026-04-22T09:09:05.934955",
     "ai_analysis": null
+  },
+  {
+    "id": "20260428100400_66264bd4",
+    "norma": "DELEGA FACULTAD PARA FIRMAR TRÁMITES EN PLATAFORMA MIDAS A JEFATURA DEPARTAMENTO JURÍDICO DE ESTA SEREMI DE SALUD REGIÓN DE LA ARAUCANÍA",
+    "articulo": "Ver norma completa",
+    "descripcion": "Publicación detectada en LeyChile (Búsqueda: seremi+salud+resolucion). Fecha: 27-ABR-2026.",
+    "link": "https://www.leychile.cl/Navegar?idNorma=1223549&idVersion=2026-04-27",
+    "status": "pending_ai",
+    "fuente": "LeyChile (BCN)",
+    "fecha_deteccion": "2026-04-28T10:04:00.377685",
+    "ai_analysis": null
   }
 ]
